@@ -13,8 +13,11 @@ namespace Tests
     {
         Manager manager;
 
+        /// <summary>
+        /// Тестирование функции Backup на специально созданных файлах
+        /// </summary>
         [TestMethod]
-        public void BackupMyFile()
+        public void BackupFakeFile()
         {
             string currentDirectory = Path.Combine(Environment.CurrentDirectory, "Test");
             Directory.CreateDirectory(currentDirectory);
@@ -53,8 +56,11 @@ namespace Tests
             }
         }
 
+        /// <summary>
+        /// Тестирование функции ComeBack на специально созданных файлах
+        /// </summary>
         [TestMethod]
-        public void ComeBackMyFile()
+        public void ComeBackFakeFile()
         {
             string currentDirectory = Path.Combine(Environment.CurrentDirectory, "Test");
             Directory.CreateDirectory(currentDirectory);
@@ -98,6 +104,9 @@ namespace Tests
             }
         }
 
+        /// <summary>
+        /// Тестироване функций Backup и ComeBack на несуществующих файлах
+        /// </summary>
         [TestMethod]
         public void NotExistsFile()
         {
@@ -133,6 +142,9 @@ namespace Tests
             }
         }
 
+        /// <summary>
+        /// Проверка преобразования шаблонных путей в абсолютные
+        /// </summary>
         [TestMethod]
         public void ControllFilePaths()
         {
@@ -157,6 +169,43 @@ namespace Tests
             {
                 Console.WriteLine(e.Message);
                 throw e;
+            }
+        }
+
+        /// <summary>
+        /// Тестирование функции Backup на контрольных файлах системы
+        /// </summary>
+        [TestMethod]
+        public void ControllFile()
+        {
+            List<string> paths = new List<string>()
+                {
+                    @"%SystemRoot%\twain_32.dll",
+                    @"%SystemRoot%\system32\nslookup.exe",
+                    @"%ProgramFiles%\Internet Explorer\iexplore.exe"
+                };
+
+            manager = new Manager(Application.ExecutablePath, paths);
+
+            try
+            {
+                manager.Backup();
+
+                List<string> newPaths = paths.Select(item => Environment.ExpandEnvironmentVariables(item)).ToList();
+                foreach (var path in newPaths)
+                {
+                    Assert.IsTrue(File.Exists(path), String.Format("File {0} not exists", path));
+                    Assert.IsTrue(File.Exists(manager.PathAddition(path)), String.Format("File {0} not exists", manager.PathAddition(path)));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw e;
+            }
+            finally
+            {
+                manager.ComeBack();
             }
         }
     }

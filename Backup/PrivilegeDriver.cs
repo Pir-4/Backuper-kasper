@@ -10,7 +10,9 @@ using System.IO;
 namespace Backup
 {
     public class PrivilegeDriver
-    {
+    {//http://blog.salamandersoft.co.uk/index.php/2009/10/setting-the-owner-of-files-and-directories-in-c/
+     //https://ru.stackoverflow.com/questions/448240/%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C-%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF-%D0%BA-%D0%BF%D0%B0%D0%BF%D0%BA%D0%B5/448383#448383
+        
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool CloseHandle(IntPtr hObject);
