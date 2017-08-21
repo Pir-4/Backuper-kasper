@@ -25,6 +25,9 @@ namespace Backup
 
         public IEnumerable<string> Paths { get; private set; }
 
+        /// <summary>
+        /// Замена файла цели текущим
+        /// </summary>
         public void Backup()
         {
             try
@@ -48,6 +51,11 @@ namespace Backup
                 throw e;    
             }
         }
+
+        /// <summary>
+        /// Возврат файлов обрастно
+        /// удаление скопированного файла и переименвоание обратно оригинала
+        /// </summary>
         public void ComeBack()
         {
             try
@@ -69,26 +77,15 @@ namespace Backup
             }
         }
 
+        /// <summary>
+        /// Дополняет строку необходимой строкой
+        /// </summary>
+        /// <param name="path">путь к файлу</param>
+        /// <returns></returns>
         public string PathAddition(string path)
         {
             return path + ADDITION;
         }
-        /*private void SetOwnerFile(string path, string account)
-        {
-
-            try
-            {
-                var owner = new NTAccount(account);
-                FileInfo file = new FileInfo(path);
-                var fileSecurity = file.GetAccessControl();
-                fileSecurity.SetOwner(owner);
-                file.SetAccessControl(fileSecurity);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }*/
 
     }
 }

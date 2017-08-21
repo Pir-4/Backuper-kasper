@@ -62,6 +62,9 @@ namespace Backup
         const string SE_BACKUP_PRIVILEGE = "SeBackupPrivilege";
         const string SE_TAKE_OWNER_SHIP_PRIVILEGE = "SeTakeOwnershipPrivilege";
 
+        /// <summary>
+        /// Повышение привелегий
+        /// </summary>
         public void UpPrivilege()
         {
             GivePrivilege(SE_RESTORE_PRIVILEGE);
@@ -69,8 +72,10 @@ namespace Backup
             GivePrivilege(SE_TAKE_OWNER_SHIP_PRIVILEGE);
         }
 
-        private string CurrentUser { get; set; }
-
+        /// <summary>
+        /// Уставновление  привелегии
+        /// </summary>
+        /// <param name="privilege">привелегия</param>
         private void GivePrivilege(string privilege)
         {
             TOKEN_PRIVILEGES tokenPrivileges;
@@ -127,17 +132,6 @@ namespace Backup
                                         lastError));
             }
             return tokenHandle;
-        }
-
-        private string GetCurrentUser()
-        {
-            var user = WindowsIdentity.GetCurrent();
-            return user.Name;
-        }
-        private string GetOwnerFile(string path)
-        {
-            var owner = File.GetAccessControl(path).GetOwner(typeof(NTAccount));
-            return owner.ToString();
         }
 
     }
